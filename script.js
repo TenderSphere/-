@@ -9,69 +9,28 @@
         }
     });
 
-    // 2. YOUR GOOGLE CREDENTIALS 
-// 1. YOUR GOOGLE CREDENTIALS
-const API_KEY = "AIzaSyCmu4s_7eAYxgBXJKvRQcLNOqBVHznZOSY";
-const CX_ID = "576c8c11804ec4b57";
+    // 2. Interactive Search Simulation with Modern UI States
+    function simulateSearch() {
+        const query = document.getElementById('tenderSearch').value;
+        const btnText = document.getElementById('btnText');
+        const searchBtn = document.getElementById('searchBtn');
 
-async function simulateSearch() {
-    const query = document.getElementById('tenderSearch').value;
-    const btnText = document.getElementById('btnText');
-    const resultsList = document.getElementById('resultsList');
-    
-    if (!query) {
-        alert("Please enter a keyword to scan the engine.");
-        return;
-    }
-
-    // UI State: Show scanning animation
-    btnText.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Analyzing Portals...';
-    document.getElementById('searchBtn').disabled = true;
-    
-    // Clear previous results
-    if(resultsList) resultsList.innerHTML = "";
-
-    try {
-        // FETCH DATA FROM GOOGLE
-        const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX_ID}&q=${query}`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        console.log("Search Results:", data);
-
-        if (data.items) {
-            displayResults(data.items);
-        } else {
-            if(resultsList) resultsList.innerHTML = "<p style='color: #ff4d4d;'>No live tenders found for this query.</p>";
-            alert("No results found. Try broader keywords.");
+        if(!query) {
+            alert("Please enter a keyword to begin intelligence scanning.");
+            return;
         }
 
-    } catch (error) {
-        console.error("Search Error:", error);
-        alert("Engine failed to scan. Check your API connection.");
-    } finally {
-        // Restore Button State
-        btnText.innerHTML = 'Scan Engine';
-        document.getElementById('searchBtn').disabled = false;
+        // Processing State: Spinning Notch Icon
+        btnText.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Analyzing Portals...';
+        searchBtn.disabled = true;
+
+        setTimeout(() => {
+            btnText.innerHTML = '<i class="fas fa-search"></i> Search Bids';
+            searchBtn.disabled = false;
+            // Realistic Alert Message
+            alert(`Intelligence scan complete for "${query}". Found 127 matching live tenders and 45 historical awards. Redirecting to your personalized feed...`);
+        }, 1800);
     }
-}
-
-function displayResults(items) {
-    const resultsList = document.getElementById('resultsList');
-    if (!resultsList) return;
-
-    // Build the HTML for the results
-    resultsList.innerHTML = items.map(item => `
-        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(0,242,255,0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px; backdrop-filter: blur(10px);">
-            <h3 style="margin-top: 0;"><a href="${item.link}" target="_blank" style="color: #00f2ff; text-decoration: none;">${item.title}</a></h3>
-            <p style="color: #ccc; font-size: 0.9rem;">${item.snippet}</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                <span style="font-size: 0.8rem; color: #888;">Source: ${item.displayLink}</span>
-                <a href="${item.link}" target="_blank" style="background: #00f2ff; color: #000; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.8rem;">VIEW DETAILS</a>
-            </div>
-        </div>
-    `).join('');
-}
 
     // 3. Chatbot Trigger Logic
     document.getElementById('chatbotTrigger').addEventListener('click', () => {
